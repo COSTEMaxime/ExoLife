@@ -28,12 +28,13 @@ int main(int argc, const char** argv)
 	cv::Mat grad;
 
 	//calc sobel for x and y axis
-	cv::Sobel(src, grad_x, ddepth, 1, 0, KERNEL_SIZE);
+	cv::Sobel(src, grad_x, ddepth, 1, 1, KERNEL_SIZE);
 	cv::convertScaleAbs(grad_x, abs_grad_x);
 	cv::Sobel(src, grad_y, ddepth, 0, 1, KERNEL_SIZE);
 	cv::convertScaleAbs(grad_y, abs_grad_y);
 	//merge result
-	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
+	cv::addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
+	cv::threshold(grad, grad, 20, 255, cv::ThresholdTypes::THRESH_BINARY_INV);
 	cv::imshow("Sobel", grad);
 
 	//calc scharr on the x and y axis
